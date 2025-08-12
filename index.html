@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Itos - Inversiones Tokenizadas</title>
+    
+    <!-- CSS Files -->
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+    
+    <!-- Ethers.js for Blockchain -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/6.7.1/ethers.umd.min.js"></script>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <nav class="nav container">
+            <a href="#" class="logo" onclick="showSection('home')">itos</a>
+            <ul class="nav-menu">
+                <li><a href="#" onclick="showSection('projects')" id="nav-projects">Inversiones</a></li>
+                <li><a href="#" onclick="showSection('dashboard')" id="nav-dashboard" style="display: none;">Dashboard</a></li>
+                <li><a href="#about">Nosotros</a></li>
+                <li><a href="#support">Soporte</a></li>
+            </ul>
+            <div class="nav-actions">
+                <div id="authButton">
+                    <a href="#" class="btn btn-secondary" onclick="openAuthModal()">Iniciar sesión</a>
+                    <a href="#" class="btn btn-primary" onclick="openAuthModal('register')">Registrarme</a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Home Section -->
+    <div id="home" class="content-section active">
+        <section class="hero">
+            <div class="container">
+                <h1>Inversiones Tokenizadas</h1>
+                <p>Accede a proyectos inmobiliarios y de equity desde $10,000 COP con transparencia blockchain</p>
+                
+                <div class="hero-stats">
+                    <div class="stat-card">
+                        <div class="stat-number">$2.3M</div>
+                        <div>Total invertido</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">847</div>
+                        <div>Inversores activos</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">14.2%</div>
+                        <div>Retorno promedio</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">23</div>
+                        <div>Proyectos completados</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Dashboard Section -->
+    <div id="dashboard" class="content-section">
+        <section class="dashboard">
+            <div class="container">
+                <div class="dashboard-header">
+                    <h2 class="dashboard-title">Mi Portfolio</h2>
+                    <div class="user-balance">
+                        <div class="balance-label">Valor Estimado Portfolio</div>
+                        <div class="balance-amount" id="portfolioValue">$0 COP</div>
+                    </div>
+                </div>
+
+                <div class="dashboard-grid">
+                    <!-- Portfolio -->
+                    <div class="dashboard-card">
+                        <h3 class="card-title">Mis Inversiones</h3>
+                        <div id="portfolioList">
+                            <div class="empty-state">
+                                <div class="empty-icon">📊</div>
+                                <div class="empty-title">No tienes inversiones activas</div>
+                                <div class="empty-subtitle">Explora nuestros proyectos y comienza a invertir</div>
+                                <button class="btn btn-primary" onclick="showSection('projects')">Ver Proyectos</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Market Signals -->
+                    <div class="dashboard-card">
+                        <h3 class="card-title">Señales de Mercado</h3>
+                        <div id="marketSignals">
+                            <div class="market-signal">
+                                <div class="signal-info">
+                                    <div class="signal-label">Torre Chapinero</div>
+                                    <div class="signal-timestamp">Actualizado: hace 2h</div>
+                                </div>
+                                <div class="signal-value positive">+12.5%</div>
+                            </div>
+                            <div class="market-signal">
+                                <div class="signal-info">
+                                    <div class="signal-label">Índice Inmobiliario BOG</div>
+                                    <div class="signal-timestamp">Actualizado: hace 4h</div>
+                                </div>
+                                <div class="signal-value positive">+8.2%</div>
+                            </div>
+                            <div class="market-signal">
+                                <div class="signal-info">
+                                    <div class="signal-label">USD/COP</div>
+                                    <div class="signal-timestamp">Actualizado: hace 1m</div>
+                                </div>
+                                <div class="signal-value negative">-0.3%</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- KYC Status -->
+                <div class="dashboard-card" id="kycStatusCard">
+                    <h3 class="card-title">Estado de Verificación</h3>
+                    <div id="kycStatus">
+                        <!-- Will be populated by JS -->
+                    </div>
+                </div>
+
+                <!-- Project Actions -->
+                <div class="dashboard-card" id="projectActionsCard" style="display: none;">
+                    <h3 class="card-title">Acciones de Proyectos</h3>
+                    <div id="projectActionsList">
+                        <!-- Will be populated with user's projects -->
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Projects Section -->
+    <div id="projects" class="content-section">
+        <section class="projects-section">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">Oportunidades de Inversión</h2>
+                    <p class="section-subtitle">Proyectos verificados con retornos atractivos y custodia fiduciaria</p>
+                </div>
+                
+                <div class="projects-grid">
+                    <!-- Project 1 - Available -->
+                    <div class="project-card available" data-project="1">
+                        <div class="project-image">
+                            🏢
+                            <span class="project-status status-available">Disponible</span>
+                        </div>
+                        <div class="project-content">
+                            <div class="project-type">Inmobiliario</div>
+                            <h3 class="project-title">Torre Empresarial Chapinero</h3>
+                            <p class="project-description">
+                                Desarrollo comercial en zona financiera de Bogotá con ROI proyectado del 18% anual.
+                            </p>
+                            
+                            <div class="project-metrics">
+                                <div class="metric">
+                                    <div class="metric-label">Meta</div>
+                                    <div class="metric-value">$5,000M COP</div>
+                                </div>
+                                <div class="metric">
+                                    <div class="metric-label">ROI Proyectado</div>
+                                    <div class="metric-value highlight">18%</div>
+                                </div>
+                            </div>
+                            
+                            <div class="project-pricing">
+                                <div class="price-label">Precio por Token</div>
+                                <div class="price-main">$10,000 COP</div>
+                                <div class="price-detail">Mínimo 1 token</div>
+                            </div>
+                            
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 65%"></div>
+                            </div>
+                            <div class="progress-text">$3,250M COP recaudados (65%)</div>
+                            
+                            <button class="btn btn-primary project-action" onclick="openInvestmentModal(1)">
+                                Invertir ahora
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Project 2 - Closed -->
+                    <div class="project-card closed">
+                        <div class="project-image">
+                            🏠
+                            <span class="project-status status-closed">Cerrado</span>
+                        </div>
+                        <div class="project-content">
+                            <div class="project-type">Inmobiliario</div>
+                            <h3 class="project-title">Residencial La Sabana</h3>
+                            <p class="project-description">
+                                Proyecto habitacional completado exitosamente con retorno final del 16.5%.
+                            </p>
+                            
+                            <div class="project-metrics">
+                                <div class="metric">
+                                    <div class="metric-label">Meta</div>
+                                    <div class="metric-value">$7,500M COP</div>
+                                </div>
+                                <div class="metric">
+                                    <div class="metric-label">ROI Final</div>
+                                    <div class="metric-value highlight">16.5%</div>
+                                </div>
+                            </div>
+                            
+                            <div class="project-pricing">
+                                <div class="price-label">Completado</div>
+                                <div class="price-main">100%</div>
+                                <div class="price-detail">Proyecto finalizado</div>
+                            </div>
+                            
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 100%"></div>
+                            </div>
+                            
+                            <button class="btn btn-secondary project-action" disabled>
+                                Proyecto completado
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Project 3 - Closed -->
+                    <div class="project-card closed">
+                        <div class="project-image">
+                            💼
+                            <span class="project-status status-closed">Cerrado</span>
+                        </div>
+                        <div class="project-content">
+                            <div class="project-type">Equity</div>
+                            <h3 class="project-title">StartUp TechFlow</h3>
+                            <p class="project-description">
+                                Inversión en equity de startup fintech. En ejecución con retorno esperado del 25%.
+                            </p>
+                            
+                            <div class="project-metrics">
+                                <div class="metric">
+                                    <div class="metric-label">Meta</div>
+                                    <div class="metric-value">$3,000M COP</div>
+                                </div>
+                                <div class="metric">
+                                    <div class="metric-label">Estado</div>
+                                    <div class="metric-value">Ejecutando</div>
+                                </div>
+                            </div>
+                            
+                            <div class="project-pricing">
+                                <div class="price-label">Estado</div>
+                                <div class="price-main">Ejecutando</div>
+                                <div class="price-detail">ROI esperado 25%</div>
+                            </div>
+                            
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 100%"></div>
+                            </div>
+                            
+                            <button class="btn btn-secondary project-action" disabled>
+                                Fondeo completo
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Project 4 - Closed -->
+                    <div class="project-card closed">
+                        <div class="project-image">
+                            🏭
+                            <span class="project-status status-closed">Cerrado</span>
+                        </div>
+                        <div class="project-content">
+                            <div class="project-type">Inmobiliario</div>
+                            <h3 class="project-title">Bodega Logística Norte</h3>
+                            <p class="project-description">
+                                Centro logístico completado exitosamente con retorno final del 19.2%.
+                            </p>
+                            
+                            <div class="project-metrics">
+                                <div class="metric">
+                                    <div class="metric-label">Meta</div>
+                                    <div class="metric-value">$4,200M COP</div>
+                                </div>
+                                <div class="metric">
+                                    <div class="metric-label">ROI Final</div>
+                                    <div class="metric-value highlight">19.2%</div>
+                                </div>
+                            </div>
+                            
+                            <div class="project-pricing">
+                                <div class="price-label">Completado</div>
+                                <div class="price-main">100%</div>
+                                <div class="price-detail">Retornos distribuidos</div>
+                            </div>
+                            
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 100%"></div>
+                            </div>
+                            
+                            <button class="btn btn-secondary project-action" disabled>
+                                Proyecto completado
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Auth Modal -->
+    <div id="authModal" class="modal">
+        <div class="modal-content">
+            <button class="close-btn" onclick="closeModal()">&times;</button>
+            <div class="modal-header">
+                <h2 class="modal-title">Acceso a Itos</h2>
+                <p class="modal-subtitle">Inicia sesión para acceder a las inversiones</p>
+            </div>
+            
+            <div id="loginForm">
+                <div class="form-group">
+                    <label class="form-label">Email</label>
+                    <input type="email" class="form-input" id="loginEmail" placeholder="tu@email.com" value="juan@itos.co">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Contraseña</label>
+                    <input type="password" class="form-input" id="loginPassword" placeholder="••••••••" value="demo123">
+                </div>
+                <button class="btn btn-primary" style="width: 100%; margin-bottom: 1rem;" onclick="login()">
+                    Iniciar Sesión
+                </button>
+                <p style="text-align: center; color: #666; font-size: 0.9rem;">
+                    ¿No tienes cuenta? 
+                    <a href="#" onclick="showRegister()" style="color: #FF4757; text-decoration: none;">Regístrate</a>
+                </p>
+            </div>
+
+            <div id="registerForm" style="display: none;">
+                <div class="form-group">
+                    <label class="form-label">Nombre Completo</label>
+                    <input type="text" class="form-input" id="registerName" placeholder="Juan Pérez">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Email</label>
+                    <input type="email" class="form-input" id="registerEmail" placeholder="tu@email.com">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Cédula</label>
+                    <input type="text" class="form-input" id="registerCedula" placeholder="12345678">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Teléfono</label>
+                    <input type="tel" class="form-input" id="registerPhone" placeholder="300 123 4567">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Contraseña</label>
+                    <input type="password" class="form-input" id="registerPassword" placeholder="••••••••">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Dirección de Wallet (opcional)</label>
+                    <input type="text" class="form-input" id="registerWallet" placeholder="0x...">
+                    <small style="color: #666; font-size: 0.8rem;">Si no tienes, crearemos una por ti</small>
+                </div>
+                <button class="btn btn-primary" style="width: 100%; margin-bottom: 1rem;" onclick="register()">
+                    Crear Cuenta
+                </button>
+                <p style="text-align: center; color: #666; font-size: 0.9rem;">
+                    ¿Ya tienes cuenta? 
+                    <a href="#" onclick="showLogin()" style="color: #FF4757; text-decoration: none;">Inicia Sesión</a>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Investment Modal -->
+    <div id="investmentModal" class="modal">
+        <div class="modal-content">
+            <button class="close-btn" onclick="closeModal()">&times;</button>
+            <div class="modal-header">
+                <h2 class="modal-title">Torre Empresarial Chapinero</h2>
+                <p class="modal-subtitle">ROI proyectado: 18% anual • Mínimo 1 token</p>
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label">Cantidad de Tokens</label>
+                <div class="token-selector">
+                    <button type="button" class="btn-adjust" onclick="adjustTokens(-1)" id="decreaseBtn">-</button>
+                    <div class="token-display">
+                        <input type="number" class="token-input" id="tokenAmount" 
+                               value="1" min="1" step="1" 
+                               oninput="updateFromTokens()">
+                        <small class="token-label">tokens</small>
+                    </div>
+                    <button type="button" class="btn-adjust" onclick="adjustTokens(1)" id="increaseBtn">+</button>
+                </div>
+                <div class="token-info">
+                    <strong>$10,000 COP por token</strong> • Mínimo 1 token
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Custodia de Tokens</label>
+                <select class="form-select" id="custodyType" onchange="updateCustodyInfo()">
+                    <option value="fiduciary">Fiduciaria Itos (Recomendado)</option>
+                    <option value="wallet">Mi Wallet Personal</option>
+                </select>
+                <div id="custodyInfo" class="custody-info">
+                    ✅ Itos mantendrá tus tokens de forma segura. Recibirás retornos automáticamente.
+                </div>
+            </div>
+
+            <div class="investment-summary">
+                <div class="summary-row">
+                    <span>Tokens a recibir:</span>
+                    <span id="summaryTokens">1</span>
+                </div>
+                <div class="summary-row">
+                    <span>Monto inversión:</span>
+                    <span id="summaryAmountCOP">$10,000 COP</span>
+                </div>
+                <div class="summary-row">
+                    <span>Comisión Itos (2%):</span>
+                    <span id="summaryFee">$200 COP</span>
+                </div>
+                <div class="summary-row summary-total">
+                    <span><strong>Total a pagar:</strong></span>
+                    <span id="summaryTotal"><strong>$10,200 COP</strong></span>
+                </div>
+            </div>
+
+            <button class="btn btn-primary" style="width: 100%;" id="investButton" onclick="processInvestment()">
+                Invertir Ahora
+            </button>
+        </div>
+    </div>
+
+    <!-- Transfer Modal -->
+    <div id="transferModal" class="modal">
+        <div class="modal-content">
+            <button class="close-btn" onclick="closeModal()">&times;</button>
+            <div class="modal-header">
+                <h2 class="modal-title">📤 Transferir Tokens</h2>
+                <p class="modal-subtitle">Envía tokens a otro usuario de forma simple y segura</p>
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label">Proyecto</label>
+                <select class="form-select" id="transferProject">
+                    <!-- Will be populated by JS -->
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Email del destinatario</label>
+                <input type="email" class="form-input" id="transferRecipient" 
+                       placeholder="maria@gmail.com" 
+                       onchange="validateRecipientEmail()">
+                <small style="color: #666; font-size: 0.8rem; margin-top: 0.5rem; display: block;">
+                    📧 Si no está registrado en Itos, recibirá una invitación
+                </small>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Cantidad de tokens</label>
+                <input type="number" class="form-input" id="transferAmount" 
+                       min="1" placeholder="1" onchange="updateTransferSummary()">
+            </div>
+
+            <div class="investment-summary" id="transferSummary" style="display: none;">
+                <div class="summary-row">
+                    <span>Tokens a transferir:</span>
+                    <span id="transferTokenAmount">0</span>
+                </div>
+                <div class="summary-row">
+                    <span>Valor aproximado:</span>
+                    <span id="transferValue">$0 COP</span>
+                </div>
+                <div class="summary-row">
+                    <span>Destinatario:</span>
+                    <span id="transferRecipientSummary">-</span>
+                </div>
+            </div>
+
+            <div style="background: #f0f9ff; border: 1px solid #bae6fd; border-radius: 8px; padding: 1rem; margin: 1rem 0; font-size: 0.85rem; color: #0369a1;">
+                <strong>🔒 Seguridad en Demo:</strong><br>
+                En producción, transferencias >$50,000 COP requieren código OTP por SMS para mayor seguridad.
+            </div>
+
+            <button class="btn btn-primary" style="width: 100%;" id="transferButton" onclick="processTransfer()">
+                Transferir Tokens
+            </button>
+        </div>
+    </div>
+mkdir itos-backend
+cd itos-backend
+npm init -y
+npm install express ethers dotenv cors
+# opcional para desarrollo:
+npm install --save-dev nodemon
+
+</body>
+</html>
+

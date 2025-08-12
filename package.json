@@ -1,0 +1,40 @@
+{
+  "name": "itos-platform",
+  "version": "1.0.0",
+  "description": "Plataforma de inversiones tokenizadas con blockchain y custodia fiduciaria",
+  "main": "public/index.html",
+  "scripts": {
+    "dev": "live-server public --port=3000 --open=/",
+    "start": "live-server public --port=8080",
+    "build": "echo 'Build process not configured yet'",
+    "test": "echo 'Tests not configured yet'",
+    "lint": "echo 'Linting not configured yet'"
+  },
+  "keywords": [
+    "blockchain",
+    "investment",
+    "tokenization",
+    "defi",
+    "real-estate",
+    "colombia"
+  ],
+  "author": "Itos Team",
+  "license": "MIT",
+  "devDependencies": {
+    "live-server": "^1.2.2"
+  },
+  "dependencies": {
+    "ethers": "^6.7.1"
+  },
+  "engines": {
+    "node": ">=16.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/your-username/itos-platform.git"
+  },
+  "bugs": {
+    "url": "https://github.com/your-username/itos-platform/issues"
+  },
+  "homepage": "https://itos.co"
+}
